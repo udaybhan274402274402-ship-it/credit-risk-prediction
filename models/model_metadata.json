@@ -1,0 +1,129 @@
+{
+  "model_name": "Random Forest (tuned)",
+  "positive_class": "higher risk (1)",
+  "threshold": 0.23,
+  "threshold_note": "Chosen on training out-of-fold predictions with cost FN=5, FP=1.",
+  "created_utc": "2026-10-28T16:29:41+00:00",
+  "sklearn_version": "1.9.1",
+  "python_version": "3.12.7",
+  "random_state": 42,
+  "test_size": 0.2,
+  "numerical_features": {
+    "duration_months": {
+      "min": 4.0,
+      "max": 60.0
+    },
+    "credit_amount": {
+      "min": 276.0,
+      "max": 15945.0
+    },
+    "installment_rate": {
+      "min": 1.0,
+      "max": 4.0
+    },
+    "residence_since": {
+      "min": 1.0,
+      "max": 4.0
+    },
+    "age": {
+      "min": 19.0,
+      "max": 75.0
+    },
+    "existing_credits": {
+      "min": 1.0,
+      "max": 4.0
+    },
+    "num_dependents": {
+      "min": 1.0,
+      "max": 2.0
+    }
+  },
+  "categorical_features": {
+    "checking_account_status": [
+      "A11",
+      "A12",
+      "A13",
+      "A14"
+    ],
+    "credit_history": [
+      "A30",
+      "A31",
+      "A32",
+      "A33",
+      "A34"
+    ],
+    "purpose": [
+      "A40",
+      "A41",
+      "A410",
+      "A42",
+      "A43",
+      "A44",
+      "A45",
+      "A46",
+      "A48",
+      "A49"
+    ],
+    "savings_account": [
+      "A61",
+      "A62",
+      "A63",
+      "A64",
+      "A65"
+    ],
+    "employment_since": [
+      "A71",
+      "A72",
+      "A73",
+      "A74",
+      "A75"
+    ],
+    "other_debtors": [
+      "A101",
+      "A102",
+      "A103"
+    ],
+    "property": [
+      "A121",
+      "A122",
+      "A123",
+      "A124"
+    ],
+    "other_installment_plans": [
+      "A141",
+      "A142",
+      "A143"
+    ],
+    "housing": [
+      "A151",
+      "A152",
+      "A153"
+    ],
+    "job": [
+      "A171",
+      "A172",
+      "A173",
+      "A174"
+    ],
+    "telephone": [
+      "A191",
+      "A192"
+    ]
+  },
+  "test_metrics": {
+    "threshold": 0.23,
+    "accuracy": 0.61,
+    "precision": 0.4262295081967213,
+    "recall": 0.8666666666666667,
+    "f1": 0.5714285714285714,
+    "roc_auc": 0.8075,
+    "brier": 0.1599028951794219,
+    "tn": 70.0,
+    "fp": 70.0,
+    "fn": 8.0,
+    "tp": 52.0,
+    "total_cost": 110.0
+  },
+  "dataset": "Statlog (German Credit Data), UCI ML Repository, CC BY 4.0, doi:10.24432/C5NC77",
+  "disclaimer": "Educational decision-support project. Not for real lending decisions."
+}
