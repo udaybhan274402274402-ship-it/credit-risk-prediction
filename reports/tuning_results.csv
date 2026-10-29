@@ -1,0 +1,4 @@
+model,best_cv_roc_auc,best_params
+Random Forest,0.795,"{'model__class_weight': None, 'model__max_depth': None, 'model__min_samples_leaf': 3, 'model__n_estimators': 400}"
+Logistic Regression,0.775,"{'model__C': 0.1, 'model__class_weight': None}"
+Decision Tree,0.724,"{'model__class_weight': None, 'model__max_depth': 6, 'model__min_samples_leaf': 20}"
