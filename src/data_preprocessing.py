@@ -1,11 +1,19 @@
-"""Data loading utilities for the German Credit dataset."""
+"""Data loading and preprocessing utilities for the German Credit dataset."""
 
 from pathlib import Path
 
 import pandas as pd
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 RAW_DATA_PATH = PROJECT_ROOT / "data" / "raw" / "german.data"
+
+RANDOM_STATE = 42  # fixed seed so results are reproducible
+TEST_SIZE = 0.2
 
 # german.data has no header row, so we name the columns ourselves
 # (order follows german.doc, attributes 1 to 20, then the target).
@@ -61,6 +69,13 @@ CATEGORICAL_FEATURES = [
     "foreign_worker",
 ]
 
+# Sensitive attributes that are NOT used as model inputs (fairness decision).
+# They stay in the raw data so we can audit model behaviour across groups later.
+EXCLUDED_FEATURES = ["personal_status_sex", "foreign_worker"]
+
+MODEL_NUMERICAL_FEATURES = [c for c in NUMERICAL_FEATURES if c not in EXCLUDED_FEATURES]
+MODEL_CATEGORICAL_FEATURES = [c for c in CATEGORICAL_FEATURES if c not in EXCLUDED_FEATURES]
+
 
 def load_raw_data(path: Path = RAW_DATA_PATH) -> pd.DataFrame:
     """Load german.data into a DataFrame with proper column names."""
@@ -76,3 +91,54 @@ def load_raw_data(path: Path = RAW_DATA_PATH) -> pd.DataFrame:
             f"Expected {len(COLUMN_NAMES)} columns but found {df.shape[1]}."
         )
     return df
+
+
+def make_binary_target(df: pd.DataFrame) -> pd.Series:
+    """Convert raw labels (1 = good, 2 = bad) to 0 = lower risk, 1 = higher risk."""
+    return (df[TARGET_COLUMN] == 2).astype(int).rename("higher_risk")
+
+
+def get_features_and_target(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
+    """Return model input features (without excluded columns) and the binary target."""
+    X = df[MODEL_NUMERICAL_FEATURES + MODEL_CATEGORICAL_FEATURES].copy()
+    y = make_binary_target(df)
+    return X, y
+
+
+def split_data(
+    X: pd.DataFrame,
+    y: pd.Series,
+    test_size: float = TEST_SIZE,
+    random_state: int = RANDOM_STATE,
+):
+    """Reproducible, stratified train-test split (keeps the 70/30 ratio in both parts)."""
+    return train_test_split(
+        X, y, test_size=test_size, random_state=random_state, stratify=y
+    )
+
+
+def build_preprocessor() -> ColumnTransformer:
+    """Build the (unfitted) preprocessing step.
+
+    Numerical: fill missing with median, then standardize.
+    Categorical: fill missing with most frequent, then one-hot encode.
+    Unknown categories at prediction time are ignored instead of crashing.
+    """
+    numeric_pipeline = Pipeline(
+        steps=[
+            ("imputer", SimpleImputer(strategy="median")),
+            ("scaler", StandardScaler()),
+        ]
+    )
+    categorical_pipeline = Pipeline(
+        steps=[
+            ("imputer", SimpleImputer(strategy="most_frequent")),
+            ("encoder", OneHotEncoder(handle_unknown="ignore", sparse_output=False)),
+        ]
+    )
+    return ColumnTransformer(
+        transformers=[
+            ("num", numeric_pipeline, MODEL_NUMERICAL_FEATURES),
+            ("cat", categorical_pipeline, MODEL_CATEGORICAL_FEATURES),
+        ]
+    )
