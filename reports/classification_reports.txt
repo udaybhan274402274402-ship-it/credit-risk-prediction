@@ -1,0 +1,42 @@
+=== Random Forest (tuned) | default 0.50 (threshold 0.50) ===
+                 precision    recall  f1-score   support
+
+ Lower risk (0)       0.79      0.93      0.86       140
+Higher risk (1)       0.72      0.43      0.54        60
+
+       accuracy                           0.78       200
+      macro avg       0.76      0.68      0.70       200
+   weighted avg       0.77      0.78      0.76       200
+
+
+=== Random Forest (tuned) | cost-based (threshold 0.23) ===
+                 precision    recall  f1-score   support
+
+ Lower risk (0)       0.90      0.50      0.64       140
+Higher risk (1)       0.43      0.87      0.57        60
+
+       accuracy                           0.61       200
+      macro avg       0.66      0.68      0.61       200
+   weighted avg       0.76      0.61      0.62       200
+
+
+=== Logistic Regression (tuned) | default 0.50 (threshold 0.50) ===
+                 precision    recall  f1-score   support
+
+ Lower risk (0)       0.79      0.92      0.85       140
+Higher risk (1)       0.69      0.42      0.52        60
+
+       accuracy                           0.77       200
+      macro avg       0.74      0.67      0.68       200
+   weighted avg       0.76      0.77      0.75       200
+
+
+=== Logistic Regression (tuned) | cost-based (threshold 0.18) ===
+                 precision    recall  f1-score   support
+
+ Lower risk (0)       0.88      0.40      0.55       140
+Higher risk (1)       0.38      0.87      0.53        60
+
+       accuracy                           0.54       200
+      macro avg       0.63      0.63      0.54       200
+   weighted avg       0.73      0.54      0.54       200
