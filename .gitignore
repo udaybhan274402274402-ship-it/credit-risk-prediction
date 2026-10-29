@@ -1,0 +1,29 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Trained model files (train.py se dobara ban jayengi)
+models/*.joblib
+models/*.pkl
+
+# Raw data (README ke instructions se download karenge)
+data/raw/*
+!data/raw/.gitkeep
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Secrets (kabhi commit mat karo)
+.env
+*.key
